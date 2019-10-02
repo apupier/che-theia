@@ -12,6 +12,8 @@ import * as theia from '@theia/plugin';
 import * as path from 'path';
 import { WelcomePage } from './welcome-page';
 
+import * as che from '@eclipse-che/plugin';
+
 import * as branding from '../src/branding.json';
 
 export namespace Settings {
@@ -50,11 +52,6 @@ async function getHtmlForWebview(context: theia.PluginContext): Promise<string> 
             </body>
             </html>`;
 
-}
-
-export async function doStart(context: theia.PluginContext): Promise<void> {
-    addPanel(context);
-    handleReadmeFiles(context);
 }
 
 // Open Readme file is there is one
@@ -130,7 +127,16 @@ export function start(context: theia.PluginContext): void {
     }
 
     if (showWelcomePage) {
-        setTimeout(async () => doStart(context), 1000);
+        setTimeout(async () => {
+
+            console.log('> IT IS WELCOME PLUGIN)');
+            console.log('> Product name ' + che.product.name);
+            console.log('> Product logo ' + che.product.logo);
+            console.log('> Product subscription ' + che.product.subscription);
+
+            addPanel(context);
+            handleReadmeFiles(context);
+        }, 1000);
     }
 }
 
