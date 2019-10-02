@@ -9,7 +9,8 @@
  **********************************************************************/
 
 import * as theia from '@theia/plugin';
-// import * as che from '@eclipse-che/plugin';
+// import { che } from '@eclipse-che/api';
+import * as che from '@eclipse-che/plugin';
 
 export async function start(context: theia.PluginContext) {
     const GENERATE_FOR_HOST: theia.CommandDescription = {
@@ -17,9 +18,17 @@ export async function start(context: theia.PluginContext) {
         label: 'Hello World'
     };
 
+    // const uri = theia.Uri.parse('http://che-che.192.168.39.119.nip.io/api/oauth/authenticate?oauth_provider=github&' +
+    //     'userId=che&scope=user:email&redirect_after_login=http://che-che.192.168.39.119.nip.io/dashboard/#/create-workspace');
+    // theia.commands.executeCommand('vscode.open', uri);
+    // const plugin = theia.plugins.getPlugin('GitHub.vscode-pull-request-github');
+    // const ctx = plugin.context;
+    // if (context) {
+    //     ctx.globalState.update('keychain: github.com', '');
+    // }
+
     theia.commands.registerCommand(GENERATE_FOR_HOST, async () => {
-        await context.globalState.update('keychain: github.com', '');
-        theia.window.showInformationMessage('updated');
+        che.window.open('http://github.com');
     });
 }
 

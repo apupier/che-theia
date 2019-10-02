@@ -45,6 +45,9 @@ export interface CheFactoryMain {
 export interface CheDevfile {
 }
 
+export interface CheWindow {
+}
+
 export interface CheDevfileMain {
     $createWorkspace(devfilePath: string): Promise<void>;
 }
@@ -58,6 +61,10 @@ export interface CheSshMain {
     $get(service: string, name: string): Promise<cheApi.ssh.SshPair>;
     $getAll(service: string): Promise<cheApi.ssh.SshPair[]>;
     $deleteKey(service: string, name: string): Promise<void>;
+}
+
+export interface CheWindowMain {
+    $open(url: string): Promise<void>;
 }
 
 /**
@@ -366,6 +373,9 @@ export const PLUGIN_RPC_CONTEXT = {
 
     CHE_SSH: <ProxyIdentifier<CheSsh>>createProxyIdentifier<CheSsh>('CheSsh'),
     CHE_SSH_MAIN: <ProxyIdentifier<CheSshMain>>createProxyIdentifier<CheSshMain>('CheSshMain'),
+
+    CHE_WINDOW: <ProxyIdentifier<CheWindow>>createProxyIdentifier<CheWindow>('CheWindow'),
+    CHE_WINDOW_MAIN: <ProxyIdentifier<CheWindowMain>>createProxyIdentifier<CheWindowMain>('CheWindowMain'),
 
     CHE_USER: <ProxyIdentifier<CheUser>>createProxyIdentifier<CheUser>('CheUser'),
     CHE_USER_MAIN: <ProxyIdentifier<CheUserMain>>createProxyIdentifier<CheUserMain>('CheUserMain'),

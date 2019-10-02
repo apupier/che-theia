@@ -20,6 +20,7 @@ import { CheDevfileImpl } from './che-devfile';
 import { CheTaskImpl } from './che-task-impl';
 import { CheSshImpl } from './che-ssh';
 import { CheUserImpl } from './che-user';
+import { CheWindowImpl } from './che-window';
 
 export interface CheApiFactory {
     (plugin: Plugin): typeof che;
@@ -32,6 +33,7 @@ export function createAPIFactory(rpc: RPCProtocol): CheApiFactory {
     const cheVariablesImpl = rpc.set(PLUGIN_RPC_CONTEXT.CHE_VARIABLES, new CheVariablesImpl(rpc));
     const cheTaskImpl = rpc.set(PLUGIN_RPC_CONTEXT.CHE_TASK, new CheTaskImpl(rpc));
     const cheSshImpl = rpc.set(PLUGIN_RPC_CONTEXT.CHE_SSH, new CheSshImpl(rpc));
+    const cheWindowImpl = rpc.set(PLUGIN_RPC_CONTEXT.CHE_WINDOW, new CheWindowImpl(rpc));
     const cheUserImpl = rpc.set(PLUGIN_RPC_CONTEXT.CHE_USER, new CheUserImpl(rpc));
 
     return function (plugin: Plugin): typeof che {
@@ -98,6 +100,12 @@ export function createAPIFactory(rpc: RPCProtocol): CheApiFactory {
             }
         };
 
+        const window: typeof che.window = {
+            open(url: string) {
+                return cheWindowImpl.open(url);
+            }
+        };
+
         const ssh: typeof che.ssh = {
             deleteKey(service: string, name: string): Promise<void> {
                 return cheSshImpl.delete(service, name);
@@ -148,6 +156,7 @@ export function createAPIFactory(rpc: RPCProtocol): CheApiFactory {
             variables,
             task,
             ssh,
+            window,
             user
         };
     };
