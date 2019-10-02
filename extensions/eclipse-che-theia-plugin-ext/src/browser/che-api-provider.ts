@@ -19,11 +19,14 @@ import { CheTaskMainImpl } from './che-task-main';
 import { CheSshMainImpl } from './che-ssh-main';
 import { CheDevfileMainImpl } from './che-devfile-main';
 import { CheUserMainImpl } from './che-user-main';
+import { CheProductMainImpl } from './che-product-main';
 
 @injectable()
 export class CheApiProvider implements MainPluginApiProvider {
 
     initialize(rpc: RPCProtocol, container: interfaces.Container): void {
+        console.log('>>>>> CheApiProvider.initialize!!!');
+
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_WORKSPACE_MAIN, new CheWorkspaceMainImpl(container));
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_FACTORY_MAIN, new CheFactoryMainImpl(container));
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_DEVFILE_MAIN, new CheDevfileMainImpl(container));
@@ -31,6 +34,7 @@ export class CheApiProvider implements MainPluginApiProvider {
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_TASK_MAIN, new CheTaskMainImpl(container, rpc));
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_SSH_MAIN, new CheSshMainImpl(container));
         rpc.set(PLUGIN_RPC_CONTEXT.CHE_USER_MAIN, new CheUserMainImpl(container));
+        rpc.set(PLUGIN_RPC_CONTEXT.CHE_PRODUCT_MAIN, new CheProductMainImpl(container, rpc));
     }
 
 }

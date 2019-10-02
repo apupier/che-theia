@@ -369,6 +369,9 @@ export const PLUGIN_RPC_CONTEXT = {
 
     CHE_USER: <ProxyIdentifier<CheUser>>createProxyIdentifier<CheUser>('CheUser'),
     CHE_USER_MAIN: <ProxyIdentifier<CheUserMain>>createProxyIdentifier<CheUserMain>('CheUserMain'),
+
+    CHE_PRODUCT: <ProxyIdentifier<CheProduct>>createProxyIdentifier<CheProduct>('CheProduct'),
+    CHE_PRODUCT_MAIN: <ProxyIdentifier<CheProductMain>>createProxyIdentifier<CheProductMain>('CheProductMain')
 };
 
 // Theia RPC protocol
@@ -513,4 +516,14 @@ export interface CheUserMain {
     $updateUserPreferences(preferences: Preferences): Promise<Preferences>;
     $replaceUserPreferences(preferences: Preferences): Promise<Preferences>;
     $deleteUserPreferences(list?: string[]): Promise<void>;
+}
+
+export interface CheProduct {
+    $setName(name: string): Promise<void>;
+}
+
+export interface CheProductMain {
+    // $getName(): Promise<string>;
+    // $getLogo(): Promise<string>;
+    // $getSubscription(): Promise<string>;
 }

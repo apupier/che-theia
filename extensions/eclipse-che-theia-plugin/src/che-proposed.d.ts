@@ -169,4 +169,11 @@ declare module '@eclipse-che/plugin' {
     export interface Preferences {
         [key: string]: string;
     }
+
+    export namespace product {
+        export let name: string;
+        export let logo: string;
+        export let subscription: string;
+    }
+
 }
