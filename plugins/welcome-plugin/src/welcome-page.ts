@@ -20,7 +20,7 @@ export class WelcomePage {
     }
 
     /**
-     * Returns the Logo URI for usinf as an image in webview frame.
+     * Returns the Logo URI to use as an image in webview frame.
      */
     protected getLogoUri(logo: string): theia.Uri {
         // Leave the Uri as it is in case HTTP resources
