@@ -14,8 +14,6 @@ import { WelcomePage } from './welcome-page';
 
 import * as che from '@eclipse-che/plugin';
 
-import * as branding from '../src/branding.json';
-
 export namespace Settings {
     export const CHE_CONFIGURATION = 'che';
     export const SHOW_WELCOME_PAGE = 'welcome.enable';
@@ -78,8 +76,8 @@ export async function handleReadmeFiles(context: theia.PluginContext): Promise<v
 }
 
 export async function addPanel(context: theia.PluginContext): Promise<void> {
-    // Create new panel
-    const currentPanel = theia.window.createWebviewPanel('WelcomePage', branding.title, { viewColumn: theia.ViewColumn.One, preserveFocus: false }, {
+    // Open Welcome tab
+    const currentPanel = theia.window.createWebviewPanel('WelcomePage', che.product.name, { viewColumn: theia.ViewColumn.One, preserveFocus: false }, {
         // Enable javascript in the webview
         enableScripts: true,
 
@@ -109,13 +107,7 @@ export async function addPanel(context: theia.PluginContext): Promise<void> {
         context.subscriptions
     );
 
-    const icon = branding.icon;
-    if (icon.startsWith('http://') || icon.startsWith('https://')) {
-        currentPanel.iconPath = theia.Uri.parse(icon);
-    } else {
-        const filePath = path.join(context.extensionPath, icon);
-        currentPanel.iconPath = theia.Uri.file(filePath);
-    }
+    currentPanel.iconPath = theia.Uri.parse(che.product.logo);
 }
 
 export function start(context: theia.PluginContext): void {
@@ -128,12 +120,6 @@ export function start(context: theia.PluginContext): void {
 
     if (showWelcomePage) {
         setTimeout(async () => {
-
-            console.log('> IT IS WELCOME PLUGIN)');
-            console.log('> Product name ' + che.product.name);
-            console.log('> Product logo ' + che.product.logo);
-            console.log('> Product subscription ' + che.product.subscription);
-
             addPanel(context);
             handleReadmeFiles(context);
         }, 1000);
