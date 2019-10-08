@@ -11,11 +11,21 @@
 import * as theia from '@theia/plugin';
 
 export function start(context: theia.PluginContext): void {
-
-    const gitExtension = theia.plugins.getPlugin('vscode.git')!.exports;
-    // tslint:disable-next-line:no-any
-    const api: any = gitExtension.getAPI(1);
-    api._model.git.onOutput.addListener('log', (out: string) => {
-        console.log(out);
+    let initialized: boolean;
+    theia.plugins.onDidChange(() => {
+        const gitExtension = theia.plugins.getPlugin('vscode.git')!.exports;
+        if (!initialized && gitExtension) {
+            initialized = true;
+            // tslint:disable-next-line:no-any
+            const api: any = gitExtension.getAPI(1);
+            api._model.git.onOutput.addListener('log', async (out: string) => {
+                if (out.indexOf('fatal: Could not read from remote repository.') > 0) {
+                    const action = await theia.window.showInformationMessage('hello', 'authenticate');
+                    if (action) {
+                        theia.window.showInformationMessage('step2');
+                    }
+                }
+            });
+        }
     });
 }
