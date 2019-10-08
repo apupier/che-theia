@@ -43,6 +43,10 @@ declare module '@eclipse-che/plugin' {
         export function createWorkspace(devfilePath: string): Promise<void>;
     }
 
+    export namespace window {
+        export function open(url: string): Promise<void>;
+    }
+
     export namespace ssh {
         export function generate(service: string, name: string): Promise<cheApi.ssh.SshPair>;
 

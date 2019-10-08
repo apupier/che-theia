@@ -9,6 +9,7 @@
  **********************************************************************/
 
 import * as theia from '@theia/plugin';
+import * as che from '@eclipse-che/plugin';
 import { RemoteSshKeyManager, SshKeyManager } from './node/ssh-key-manager';
 import { che as cheApi } from '@eclipse-che/api';
 import { resolve } from 'path';
@@ -16,6 +17,25 @@ import { pathExists, unlink, ensureFile, chmod, readFile, writeFile, appendFile 
 import * as os from 'os';
 
 export async function start() {
+
+    let initialized: boolean;
+    theia.plugins.onDidChange(() => {
+        const gitExtension = theia.plugins.getPlugin('vscode.git')!.exports;
+        if (!initialized && gitExtension) {
+            initialized = true;
+            // tslint:disable-next-line:no-any
+            const api: any = gitExtension.getAPI(1);
+            api._model.git.onOutput.addListener('log', async (out: string) => {
+                if (out.indexOf('fatal: Could not read from remote repository.') > 0) {
+                    const action = await theia.window.showInformationMessage('hello', 'authenticate');
+                    if (action) {
+                        che.window.open('github.com');
+                    }
+                }
+            });
+        }
+    });
+
     const sshKeyManager = new RemoteSshKeyManager();
     const GENERATE_FOR_HOST: theia.CommandDescription = {
         id: 'ssh:generate_for_host',
