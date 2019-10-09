@@ -29,7 +29,14 @@ export async function start() {
                 if (out.indexOf('fatal: Could not read from remote repository.') > 0) {
                     const action = await theia.window.showInformationMessage('hello', 'authenticate');
                     if (action) {
-                        che.window.open('github.com');
+                        const apiUrl = await theia.env.getEnvVariable('CHE_API');
+                        const workspaceName = await theia.env.getEnvVariable('CHE_WORKSPACE_NAME');
+                        if (apiUrl && workspaceName) {
+                            const redirectUrl = apiUrl.substring(0, apiUrl.indexOf('api')) + 'dashboard/#/ide/che/cheTheia';
+                            const url = `${apiUrl}/${workspaceName}/oauth/authenticate?oauth_provider=github&userId=che
+                            &scope=user:email&redirect_after_login=${redirectUrl}`;
+                            che.window.open(url);
+                        }
                     }
                 }
             });
